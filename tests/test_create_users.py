@@ -10,6 +10,7 @@ class TestCreateUsers:
 
     def test_create_user(self):
         response = MyRequests.post("/users/", self.body)
+        print(response.json())
         assert response.json()["first_name"] == self.body.get("first_name"), "First name was not created"
         assert response.json()["last_name"] == self.body.get("last_name"), "Last name was not created"
 
