@@ -19,7 +19,7 @@ class TestStatusCompanies:
 
     @pytest.mark.parametrize("status", status_list)
     def test_get_closed_companies(self, status):
-        response = self.request.get(f"/?status={status}&limit=3&offset=0")
+        response = self.request.get(f"/companies/?status={status}&limit=3&offset=0")
         items_list = response.json()["data"]
         for item in items_list:
             assert item["company_status"] == status

@@ -9,7 +9,7 @@ class TestUpdateUsers:
     }
 
     def test_update_user(self):
-        response = MyRequests.put("/users/21882", self.body)
+        response = MyRequests.put("/users/21899", self.body)
         print(response.json())
         assert response.json()["first_name"] != "Denis", "First name was not updated"
         assert response.json()["last_name"] != "Denis", "Last name was not updated"
