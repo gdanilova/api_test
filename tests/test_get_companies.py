@@ -1,7 +1,8 @@
 from pprint import pprint
 
-
 import pytest
+import requests
+
 from data.data_files import StatusCompanies
 from src.my_requests import MyRequests
 
@@ -23,3 +24,7 @@ class TestStatusCompanies:
         items_list = response.json()["data"]
         for item in items_list:
             assert item["company_status"] == status
+
+    # def test_get_timeout(self):
+    #     response = self.request.get(f"/companies/?status=ACTIVE&limit=3&offset=0")
+    #     print(response.elapsed.total_seconds())
