@@ -4,12 +4,18 @@ import pytest
 import requests
 
 from data.data_files import StatusCompanies
+from data.urls import Urls
 from src.my_requests import MyRequests
 
 
 class TestStatusCompanies:
     status_list = StatusCompanies.status_list
     request = MyRequests()
+
+    def test_get_statuses_companies1(self, make_user):
+        print("Руддщ")
+
+
 
     @pytest.mark.parametrize("status", status_list)
     def test_get_statuses_companies(self, status):

@@ -1,5 +1,5 @@
 import requests
-from data.urls import base_url
+from data.urls import Urls
 
 
 class MyRequests:
@@ -25,7 +25,7 @@ class MyRequests:
 
     @staticmethod
     def _send(url: str, data: dict, headers: dict, cookies: dict, method: str):
-        url = f"""{base_url}{url}"""
+        url = f"""{Urls.base_url}{url}"""
 
         if headers is None:
             headers = {}

@@ -1,28 +1,30 @@
-from src.my_requests import MyRequests
-from generator.generator import generated_person
+import pytest
+
+from data.data_files import KeysCreateUser
+from src.create_user import CreateUser
 from src.assertions import Assertion
 from data.status_code import StatusCode
-from src.base_page import BasePage
 
 
-class TestCreateUsers(BasePage):
+class TestCreateUsers:
     assertion = Assertion()
     status_code = StatusCode()
+    keys = KeysCreateUser()
 
-    def test_create_user(self):
-        person_info = next(generated_person())
-        first_name = person_info.first_name
-        last_name = person_info.last_name
-        company_id = person_info.company_id
-        response = MyRequests.post("/users/", self.get_body(first_name, last_name, company_id))
-        print(response.json())
-        self.assertion.assert_first_name(response, first_name)
-        self.assertion.assert_last_name(response, last_name)
-
-    def test_get_status_code_201(self):
-        person_info = next(generated_person())
-        first_name = person_info.first_name
-        last_name = person_info.last_name
-        company_id = person_info.company_id
-        response = MyRequests.post("/users/", self.get_body(first_name, last_name, company_id))
+    def test_get_status_code_201(self, prepare_user_in_active_company):
+        post_method = CreateUser()
+        response = post_method.get_user(prepare_user_in_active_company)
         self.assertion.assert_status_code(response, self.status_code.CREATE)
+
+    @pytest.mark.parametrize("key", keys.keys)
+    def test_check_keys_in_response(self, prepare_user_in_active_company, key):
+        post_method = CreateUser()
+        post_method.get_user(prepare_user_in_active_company)
+
+    def test_create_user_without_first_name(self):
+        post_method = CreateUser()
+        post_method.create_user_without_first_name()
+        response, last_name = post_method.create_user_without_first_name()
+        self.assertion.assert_status_code(response, self.status_code.CREATE)
+        self.assertion.assert_first_name(response, None)
+        self.assertion.assert_last_name(response, last_name)
