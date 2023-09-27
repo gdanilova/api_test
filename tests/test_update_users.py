@@ -8,20 +8,14 @@ from src.update_user import UpdateUser
 class TestUpdateUsers:
     assertion = Assertion()
     status_code = StatusCode()
-    body = {
-        "first_name": "David",
-        "last_name": "David",
-        "company_id": 1
-    }
+    put_method = UpdateUser()
 
-    def test_update_user(self):
-        response = MyRequests.put("/users/21899", self.body)
-        assert response.json()["first_name"] != "Denis", "First name was not updated"
-        assert response.json()["last_name"] != "Denis", "Last name was not updated"
+    def test_update_user(self, make_user):
+        user_id = make_user.json()["user_id"]
+        response = self.put_method.update_user_with_valid_data(user_id)
         self.assertion.assert_status_code(response, self.status_code.OK)
 
     def test_update_first_name(self, make_user):
-        put_method = UpdateUser()
-        response, first_name = put_method.update_first_name(make_user)
-        assert response.json()["first_name"] != first_name
+        response, first_name = self.put_method.update_first_name(make_user)
+        self.assertion.assert_that_text_not_equal(response.json()["first_name"], first_name)
 

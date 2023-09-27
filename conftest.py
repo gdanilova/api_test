@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 import pytest
 import requests
@@ -58,3 +59,29 @@ def make_user(prepare_user_in_active_company):
     post_method = CreateUser()
     response = post_method.get_user(prepare_user_in_active_company)
     return response
+
+@pytest.fixture(scope="function")
+def read_companies_data(get_absolute_path):
+    root_directory = get_absolute_path
+    json_data_directory = os.path.join(root_directory, 'json_data')
+    file_name = os.path.join(json_data_directory, 'companies_data.json')
+    try:
+        with open(file_name, 'r', encoding='utf-8') as json_file:
+            json_data = json.load(json_file)
+            return json_data
+    except FileExistsError:
+        print(f"File {file_name} does not exist")
+    except json.JSONDecodeError:
+        print(f"File {file_name} is not JSON format")
+
+
+def clear_logs_dir():
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    logs_dir = os.path.join(current_dir, "logs")
+    if os.path.exists(logs_dir):
+        shutil.rmtree(logs_dir)
+
+        os.makedirs(logs_dir, exist_ok=True)
+@pytest.hookimpl(tryfirst=True)
+def pytest_sessionstart(session):
+    clear_logs_dir()

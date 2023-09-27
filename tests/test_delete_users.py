@@ -17,6 +17,7 @@ class TestDeleteUsers:
     def test_delete_users_has_text_null(self):
         response = MyRequests.delete("/users/22159")
         actual_text = response.text
+        print(actual_text)
         self.assertion.assert_text(actual_text, "null")
 
     def test_delete_deleted_users_has_status_code_404(self):

@@ -20,8 +20,12 @@ class Assertion:
         assert name in response_json, f"""response JSON doesn't have key '{name}'"""
 
     @staticmethod
-    def assert_text(actual_text: str, expected_text):
+    def assert_text(actual_text, expected_text):
         assert actual_text == expected_text, "Text is not equal"
+
+    @staticmethod
+    def assert_that_text_not_equal(actual_text, expected_text):
+        assert actual_text != expected_text, "Text is equal"
 
     @staticmethod
     def assert_first_name(response: Response, expected_text):

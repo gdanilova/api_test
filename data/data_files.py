@@ -1,5 +1,6 @@
 class StatusCompanies:
     status_list = ["ACTIVE", "BANKRUPT", "CLOSED"]
+    invalid_company_status = ["closed", "bankrupt"]
 
 
 class KeysCreateUser:
